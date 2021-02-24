@@ -1,0 +1,42 @@
+{
+  "name": "task-pool-executor",
+  "version": "1.0.0",
+  "description": "task pool executor",
+  "scripts": {
+    "build:dev": "tsc --watch",
+    "build:prod": "rimraf ./dist && tsc -b tsconfig.prod.json",
+    "pretty:check": "prettier --check .",
+    "pretty": "prettier --check --write .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viqueen/task-pool-executor.git"
+  },
+  "keywords": [
+    "task",
+    "pool",
+    "executor"
+  ],
+  "author": "Hasnae R.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/viqueen/task-pool-executor/issues"
+  },
+  "homepage": "https://github.com/viqueen/task-pool-executor#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
+    "husky": "^5.1.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.2",
+    "typescript": "^4.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretty:check"
+    }
+  }
+}
