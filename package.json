@@ -1,6 +1,6 @@
 {
   "name": "task-pool-executor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "task pool executor",
   "scripts": {
     "build:dev": "tsc --watch",
@@ -12,6 +12,8 @@
   "files": [
     "dist"
   ],
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/viqueen/task-pool-executor.git"
