@@ -1,10 +1,10 @@
 import EventEmitter from 'events';
 
-interface Task {
+export interface Task {
     (): Promise<any>;
 }
 
-interface TaskExecutor {
+export interface TaskExecutor {
     readonly queue: Array<Task>;
     readonly maxConcurrent: number;
     submit(task: Task): void;

@@ -1,6 +1,6 @@
 {
   "name": "task-pool-executor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "task pool executor",
   "scripts": {
     "build:dev": "tsc --watch",
