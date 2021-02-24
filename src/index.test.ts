@@ -1,4 +1,4 @@
-import { DefaultTaskExecutor } from './DefaultTaskExecutor';
+import { DefaultTaskExecutor } from './index';
 
 const executor = new DefaultTaskExecutor(3);
 

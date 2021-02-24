@@ -1,5 +1,17 @@
 import EventEmitter from 'events';
 
+interface Task {
+    (): Promise<any>;
+}
+
+interface TaskExecutor {
+    readonly queue: Array<Task>;
+    readonly maxConcurrent: number;
+    submit(task: Task): void;
+
+    close(): Promise<any>;
+}
+
 export class DefaultTaskExecutor extends EventEmitter implements TaskExecutor {
     readonly maxConcurrent!: number;
     readonly queue!: Array<Task>;
