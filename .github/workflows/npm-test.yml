@@ -10,5 +10,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 15
+      - uses: SonarSource/sonarcloud-github-action@master
       - run: npm ci
       - run: npm test
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
