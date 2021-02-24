@@ -9,6 +9,9 @@
     "pretty": "prettier --check --write .",
     "test": "jest"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/viqueen/task-pool-executor.git"
