@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { randomUUID } from 'crypto';
 
 export interface Task {
     (): Promise<any>;
@@ -15,42 +16,44 @@ export interface TaskExecutor {
 export class DefaultTaskExecutor extends EventEmitter implements TaskExecutor {
     readonly maxConcurrent!: number;
     readonly queue!: Array<Task>;
-    readonly current!: Array<Promise<any>>;
-    currentCount!: number;
+    readonly current!: Map<string, Promise<any>>;
 
     constructor(maxConcurrent: number = 5) {
         super();
         this.maxConcurrent = maxConcurrent;
         this.queue = [];
-        this.current = [];
-        this.currentCount = 0;
+        this.current = new Map<string, Promise<any>>();
 
         this.on('release', this._release);
     }
 
-    _release() {
-        this.currentCount = this.currentCount - 1;
+    _release(taskId: string) {
+        this.current.delete(taskId);
+
         const task = this.queue.shift();
         if (task) {
-            this._runTask(this.currentCount, task);
+            this._runTask(task);
         }
     }
 
-    _runTask(index: number, task: Task) {
-        this.current[index] = task()
-            .then(() => {
-                this.emit('release');
-            })
-            .catch(() => {
-                // TODO : retry
-                this.emit('release');
-            });
+    _runTask(task: Task) {
+        const taskId = randomUUID();
+        this.current.set(
+            taskId,
+            task()
+                .then(() => {
+                    this.emit('release', taskId);
+                })
+                .catch(() => {
+                    this.emit('release', taskId);
+                })
+        );
     }
 
     submit(task: Task): void {
-        if (this.currentCount < this.maxConcurrent) {
-            this.currentCount = this.currentCount + 1;
-            this._runTask(this.currentCount, task);
+        const currentCount = this.current.size;
+        if (currentCount < this.maxConcurrent) {
+            this._runTask(task);
         } else {
             this.queue.push(task);
         }
@@ -59,8 +62,9 @@ export class DefaultTaskExecutor extends EventEmitter implements TaskExecutor {
     close(): Promise<any> {
         return new Promise<any>((resolve) => {
             this.queue.splice(0);
-            Promise.all(this.current).then(() => {
+            Promise.all(this.current.values()).then(() => {
                 resolve({});
+                this.current.clear();
             });
         });
     }
