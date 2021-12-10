@@ -3,11 +3,12 @@
   "version": "1.0.3",
   "description": "task pool executor",
   "scripts": {
-    "build:dev": "tsc --watch",
-    "build:prod": "rimraf ./dist && tsc -b tsconfig.prod.json",
+    "build": "tsc --watch",
+    "test": "jest --watchAll",
+    "ci:test": "jest",
+    "ci:build": "rimraf ./dist && tsc -b tsconfig.prod.json",
     "pretty:check": "prettier --check .",
-    "pretty": "prettier --check --write .",
-    "test": "jest"
+    "pretty": "prettier --check --write ."
   },
   "files": [
     "dist"
