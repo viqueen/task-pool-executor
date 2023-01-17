@@ -1,6 +1,6 @@
 {
   "name": "task-pool-executor",
-  "version": "3.0.0",
+  "version": "2.0.0",
   "description": "task pool executor",
   "scripts": {
     "build": "tsc --watch",
@@ -36,7 +36,7 @@
     "@types/node": "^18.0.0",
     "husky": "^7.0.4",
     "jest": "^29.0.0",
-    "npm-check-updates": "^12.2.1",
+    "npm-check-updates": "^16.0.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.0",
