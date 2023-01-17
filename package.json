@@ -1,6 +1,6 @@
 {
   "name": "task-pool-executor",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "task pool executor",
   "scripts": {
     "build": "tsc --watch",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/viqueen/task-pool-executor#readme",
   "devDependencies": {
     "@types/jest": "^27.4.0",
-    "@types/node": "^17.0.13",
+    "@types/node": "^18.0.0",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "npm-check-updates": "^12.2.1",
