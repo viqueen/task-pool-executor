@@ -1,5 +1,5 @@
 import Mock = jest.Mock;
-import { taskPoolExecutor } from './task-pool-executor';
+import { taskPoolExecutor } from './index';
 
 const executor = taskPoolExecutor({ maxConcurrent: 3 });
 

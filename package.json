@@ -47,5 +47,8 @@
     "hooks": {
       "pre-commit": "npm run format:check"
     }
+  },
+  "dependencies": {
+    "cli-progress": "^3.11.2"
   }
 }

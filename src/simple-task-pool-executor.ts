@@ -1,8 +1,11 @@
-import { Runnable, TaskPoolExecutor } from './types';
 import EventEmitter from 'events';
+import { Runnable, TaskPoolExecutor } from './types';
 import { randomUUID } from 'crypto';
 
-class TaskPoolExecutorImpl extends EventEmitter implements TaskPoolExecutor {
+export class SimpleTaskPoolExecutor
+    extends EventEmitter
+    implements TaskPoolExecutor
+{
     readonly maxConcurrent: number;
     readonly queue: Runnable[];
     readonly current: Map<string, Promise<any>>;
@@ -24,7 +27,7 @@ class TaskPoolExecutorImpl extends EventEmitter implements TaskPoolExecutor {
         }
     }
 
-    _execute(runnable: Runnable) {
+    _execute(runnable: Runnable): string {
         const taskId = randomUUID();
         this.current.set(
             taskId,
@@ -32,6 +35,7 @@ class TaskPoolExecutorImpl extends EventEmitter implements TaskPoolExecutor {
                 .then(() => this.emit('release', taskId))
                 .catch(() => this.emit('release', taskId))
         );
+        return taskId;
     }
 
     submit(runnable: Runnable) {
@@ -53,9 +57,3 @@ class TaskPoolExecutorImpl extends EventEmitter implements TaskPoolExecutor {
         });
     }
 }
-
-export const taskPoolExecutor = (
-    props: { maxConcurrent: number } = { maxConcurrent: 5 }
-): TaskPoolExecutor => {
-    return new TaskPoolExecutorImpl(props);
-};
