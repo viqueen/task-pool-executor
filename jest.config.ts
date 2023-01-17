@@ -9,5 +9,5 @@ export default async (): Promise<Config> => {
         testEnvironment: 'node',
         collectCoverage: true,
         coverageDirectory: 'coverage'
-    }
-}
+    };
+};
