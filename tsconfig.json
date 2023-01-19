@@ -15,6 +15,7 @@
     "dist",
     "coverage",
     "jest.config.ts",
+    "examples/**/*.ts",
     "src/**/*.test.ts"
   ]
 }

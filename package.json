@@ -9,7 +9,8 @@
     "test:watch": "jest --watchAll",
     "format:check": "prettier --check .",
     "format": "prettier --check --write .",
-    "check-updates": "npm-check-updates -u"
+    "check-updates": "npm-check-updates -u",
+    "example:cli-progress": "ts-node examples/with-cli-progress.ts"
   },
   "files": [
     "dist"
@@ -32,6 +33,7 @@
   },
   "homepage": "https://github.com/viqueen/task-pool-executor#readme",
   "devDependencies": {
+    "@types/cli-progress": "^3.11.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^18.0.0",
     "husky": "^8.0.0",
@@ -47,5 +49,9 @@
     "hooks": {
       "pre-commit": "npm run format:check"
     }
+  },
+  "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "cli-progress": "^3.11.2"
   }
 }

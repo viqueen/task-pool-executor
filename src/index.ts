@@ -1,71 +1,17 @@
-import EventEmitter from 'events';
-import { randomUUID } from 'crypto';
+import { CliProgressRunContext, TaskPoolExecutor } from './types';
+import { SimpleTaskPoolExecutor } from './simple-task-pool-executor';
+import { CliProgressTaskPoolExecutor } from './cli-progress-task-pool-executor';
 
-export interface Task {
-    (): Promise<any>;
-}
+export * from './types';
 
-export interface TaskExecutor {
-    readonly queue: Array<Task>;
-    readonly maxConcurrent: number;
-    submit(task: Task): void;
+export const taskPoolExecutor = <TOutput, TRunContext>(
+    props: { maxConcurrent: number } = { maxConcurrent: 5 }
+): TaskPoolExecutor<TOutput, TRunContext> => {
+    return new SimpleTaskPoolExecutor<TOutput, TRunContext>(props);
+};
 
-    close(): Promise<any>;
-}
-
-export class DefaultTaskExecutor extends EventEmitter implements TaskExecutor {
-    readonly maxConcurrent!: number;
-    readonly queue!: Array<Task>;
-    readonly current!: Map<string, Promise<any>>;
-
-    constructor(maxConcurrent: number = 5) {
-        super();
-        this.maxConcurrent = maxConcurrent;
-        this.queue = [];
-        this.current = new Map<string, Promise<any>>();
-
-        this.on('release', this._release);
-    }
-
-    _release(taskId: string) {
-        this.current.delete(taskId);
-
-        const task = this.queue.shift();
-        if (task) {
-            this._runTask(task);
-        }
-    }
-
-    _runTask(task: Task) {
-        const taskId = randomUUID();
-        this.current.set(
-            taskId,
-            task()
-                .then(() => {
-                    this.emit('release', taskId);
-                })
-                .catch(() => {
-                    this.emit('release', taskId);
-                })
-        );
-    }
-
-    submit(task: Task): void {
-        const currentCount = this.current.size;
-        if (currentCount < this.maxConcurrent) {
-            this._runTask(task);
-        } else {
-            this.queue.push(task);
-        }
-    }
-
-    close(): Promise<any> {
-        return new Promise<any>((resolve) => {
-            this.queue.splice(0);
-            Promise.all(this.current.values()).then(() => {
-                resolve({});
-                this.current.clear();
-            });
-        });
-    }
-}
+export const cliProgressTaskPoolExecutor = <TOutput>(
+    props: { maxConcurrent: number } = { maxConcurrent: 5 }
+): TaskPoolExecutor<TOutput, CliProgressRunContext> => {
+    return new CliProgressTaskPoolExecutor<TOutput>(props);
+};
