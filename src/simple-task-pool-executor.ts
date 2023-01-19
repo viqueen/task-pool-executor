@@ -23,12 +23,11 @@ export class SimpleTaskPoolExecutor<TOutput>
         this.current.delete(taskId);
         const runnable = this.queue.shift();
         if (runnable) {
-            this._execute(runnable);
+            this._execute(randomUUID(), runnable);
         }
     }
 
-    _execute(runnable: Runnable<TOutput>): string {
-        const taskId = randomUUID();
+    _execute(taskId: string, runnable: Runnable<TOutput>): string {
         const release = (output: TOutput) => {
             this.emit('release', taskId);
             return output;
@@ -40,7 +39,7 @@ export class SimpleTaskPoolExecutor<TOutput>
     submit(runnable: Runnable<TOutput>) {
         const currentCount = this.current.size;
         if (currentCount < this.maxConcurrent) {
-            this._execute(runnable);
+            this._execute(randomUUID(), runnable);
         } else {
             this.queue.push(runnable);
         }
