@@ -12,7 +12,11 @@ export class CliProgressTaskPoolExecutor<
         super(props);
         this.poolProgress = new MultiBar(
             {
-                format: colors.cyan('{bar}') + ' {percentage}% | {title}'
+                format:
+                    colors.redBright('{bar}') +
+                    ' {percentage}% | {title} | {info}',
+                clearOnComplete: true,
+                hideCursor: true
             },
             Presets.rect
         );
@@ -24,7 +28,8 @@ export class CliProgressTaskPoolExecutor<
         runnable: Runnable<TOutput, CliProgressRunContext>
     ): string {
         const progress = this.poolProgress.create(100, 0, {
-            title: runnable.title
+            title: runnable.title,
+            info: ''
         });
         this.bars.set(taskId, progress);
         return super._execute(taskId, runnable, { progress });
