@@ -1,11 +1,11 @@
 import Mock = jest.Mock;
 import { Runnable, taskPoolExecutor } from './index';
 
-const executor = taskPoolExecutor<string>({ maxConcurrent: 3 });
+const executor = taskPoolExecutor<string, {}>({ maxConcurrent: 3 });
 
 describe('task-pool-executor', () => {
     let task: Mock;
-    let delayedTask: (millis: number, runIt?: boolean) => Runnable<any>;
+    let delayedTask: (millis: number, runIt?: boolean) => Runnable<string, {}>;
 
     beforeEach(() => {
         task = jest.fn();
