@@ -1,16 +1,16 @@
 import { SimpleTaskPoolExecutor } from './simple-task-pool-executor';
 import { MultiBar, SingleBar, Presets } from 'cli-progress';
-import { Runnable } from './types';
+import { CliProgressRunContext, Runnable } from './types';
 import colors from 'ansi-colors';
 
 export class CliProgressTaskPoolExecutor<
     TOutput
-> extends SimpleTaskPoolExecutor<TOutput> {
-    private readonly progress: MultiBar;
+> extends SimpleTaskPoolExecutor<TOutput, CliProgressRunContext> {
+    private readonly poolProgress: MultiBar;
     private readonly bars: Map<string, SingleBar>;
     constructor(props: { maxConcurrent: number }) {
         super(props);
-        this.progress = new MultiBar(
+        this.poolProgress = new MultiBar(
             {
                 format: colors.cyan('{bar}') + ' {percentage}% | {title}'
             },
@@ -19,23 +19,28 @@ export class CliProgressTaskPoolExecutor<
         this.bars = new Map<string, SingleBar>();
     }
 
-    _execute(taskId: string, runnable: Runnable<TOutput>): string {
-        const bar = this.progress.create(100, 0, { title: runnable.title });
-        this.bars.set(taskId, bar);
-        return super._execute(taskId, runnable);
+    _execute(
+        taskId: string,
+        runnable: Runnable<TOutput, CliProgressRunContext>
+    ): string {
+        const progress = this.poolProgress.create(100, 0, {
+            title: runnable.title
+        });
+        this.bars.set(taskId, progress);
+        return super._execute(taskId, runnable, { progress });
     }
 
     _release(taskId: string) {
-        const bar = this.bars.get(taskId);
-        if (bar) {
-            bar.update(100);
+        const progress = this.bars.get(taskId);
+        if (progress) {
+            progress.update(100);
         }
         super._release(taskId);
     }
 
     async close(): Promise<TOutput[]> {
         const result = super.close();
-        this.progress.stop();
+        this.poolProgress.stop();
         return result;
     }
 }
