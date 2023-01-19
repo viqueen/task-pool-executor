@@ -9,7 +9,8 @@
     "test:watch": "jest --watchAll",
     "format:check": "prettier --check .",
     "format": "prettier --check --write .",
-    "check-updates": "npm-check-updates -u"
+    "check-updates": "npm-check-updates -u",
+    "example:cli-progress": "ts-node examples/with-cli-progress.ts"
   },
   "files": [
     "dist"

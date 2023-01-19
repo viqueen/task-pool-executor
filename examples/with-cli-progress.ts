@@ -1,11 +1,15 @@
-import { cliProgressTaskPoolExecutor } from './index';
+import { CliProgressRunContext, cliProgressTaskPoolExecutor } from '../src';
 
 const taskPool = cliProgressTaskPoolExecutor<string>();
 
 const delayedTask = (millis: number, title: string) => {
-    const run = () =>
+    const run = (ctx?: CliProgressRunContext) =>
         new Promise<string>((resolve) => {
-            setTimeout(() => {
+            const interval = setInterval(() => {
+                ctx?.progress.increment();
+            }, 8);
+            const timeout = setTimeout(() => {
+                clearInterval(interval);
                 resolve('done');
             }, millis);
         });
