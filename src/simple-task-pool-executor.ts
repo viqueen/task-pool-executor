@@ -2,13 +2,13 @@ import EventEmitter from 'events';
 import { Runnable, TaskPoolExecutor } from './types';
 import { randomUUID } from 'crypto';
 
-export class SimpleTaskPoolExecutor
+export class SimpleTaskPoolExecutor<TOutput>
     extends EventEmitter
-    implements TaskPoolExecutor
+    implements TaskPoolExecutor<TOutput>
 {
     readonly maxConcurrent: number;
-    readonly queue: Runnable[];
-    readonly current: Map<string, Promise<any>>;
+    readonly queue: Runnable<TOutput>[];
+    readonly current: Map<string, Promise<TOutput>>;
 
     constructor(props: { maxConcurrent: number }) {
         super();
@@ -27,18 +27,17 @@ export class SimpleTaskPoolExecutor
         }
     }
 
-    _execute(runnable: Runnable): string {
+    _execute(runnable: Runnable<TOutput>): string {
         const taskId = randomUUID();
-        this.current.set(
-            taskId,
-            runnable()
-                .then(() => this.emit('release', taskId))
-                .catch(() => this.emit('release', taskId))
-        );
+        const release = (output: TOutput) => {
+            this.emit('release', taskId);
+            return output;
+        };
+        this.current.set(taskId, runnable.run().then(release).catch(release));
         return taskId;
     }
 
-    submit(runnable: Runnable) {
+    submit(runnable: Runnable<TOutput>) {
         const currentCount = this.current.size;
         if (currentCount < this.maxConcurrent) {
             this._execute(runnable);
@@ -47,13 +46,10 @@ export class SimpleTaskPoolExecutor
         }
     }
 
-    close(): Promise<any> {
-        return new Promise<any>((resolve) => {
-            this.queue.splice(0);
-            Promise.all(this.current.values()).then(() => {
-                resolve({});
-                this.current.clear();
-            });
-        });
+    async close(): Promise<TOutput[]> {
+        this.queue.splice(0);
+        const result = await Promise.all(this.current.values());
+        this.current.clear();
+        return result;
     }
 }

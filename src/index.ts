@@ -4,14 +4,14 @@ import { CliProgressTaskPoolExecutor } from './cli-progress-task-pool-executor';
 
 export * from './types';
 
-export const taskPoolExecutor = (
+export const taskPoolExecutor = <TOutput>(
     props: { maxConcurrent: number } = { maxConcurrent: 5 }
-): TaskPoolExecutor => {
-    return new SimpleTaskPoolExecutor(props);
+): TaskPoolExecutor<TOutput> => {
+    return new SimpleTaskPoolExecutor<TOutput>(props);
 };
 
-export const cliProgressTaskPoolExecutor = (
+export const cliProgressTaskPoolExecutor = <TOutput>(
     props: { maxConcurrent: number } = { maxConcurrent: 5 }
-): TaskPoolExecutor => {
-    return new CliProgressTaskPoolExecutor(props);
+): TaskPoolExecutor<TOutput> => {
+    return new CliProgressTaskPoolExecutor<TOutput>(props);
 };
