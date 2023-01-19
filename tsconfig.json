@@ -5,6 +5,7 @@
     "removeComments": true,
     "outDir": "dist",
     "rootDir": "src",
+    "declaration": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noImplicitReturns": true,
