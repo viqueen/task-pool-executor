@@ -1,5 +1,5 @@
 import Mock = jest.Mock;
-import { Runnable, taskPoolExecutor } from './index';
+import { Runnable, taskPoolExecutor, withCliProgress } from './index';
 
 const executor = taskPoolExecutor<string, {}>({ maxConcurrent: 3 });
 
@@ -63,4 +63,14 @@ describe('task-pool-executor', () => {
 
         expect(task).toBeCalledTimes(4);
     }, 10500);
+
+    it('should clear when tasks are done', async () => {
+        await withCliProgress<string>((taskPool) => {
+            new Array(4)
+                .fill(0)
+                .map((_v, index) => delayedTask(1500))
+                .forEach((t) => taskPool.submit(t));
+        });
+        expect(task).toBeCalledTimes(4);
+    });
 });

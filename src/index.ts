@@ -15,3 +15,23 @@ export const cliProgressTaskPoolExecutor = <TOutput>(
 ): TaskPoolExecutor<TOutput, CliProgressRunContext> => {
     return new CliProgressTaskPoolExecutor<TOutput>(props);
 };
+
+export type WithCliProgress<TOutput> = (
+    taskPool: TaskPoolExecutor<TOutput, CliProgressRunContext>
+) => void;
+
+export const withCliProgress = async <TOutput>(
+    fn: WithCliProgress<TOutput>
+) => {
+    const taskPool = cliProgressTaskPoolExecutor<TOutput>();
+    fn(taskPool);
+    return new Promise((resolve) => {
+        const timer = setInterval(async () => {
+            if (taskPool.queue.length === 0 && taskPool.current.size === 0) {
+                await taskPool.close();
+                clearInterval(timer);
+                resolve({});
+            }
+        }, 2);
+    });
+};
