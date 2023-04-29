@@ -11,7 +11,15 @@ export const taskPoolExecutor = <TOutput, TRunContext>(
 };
 
 export const cliProgressTaskPoolExecutor = <TOutput>(
-    props: { maxConcurrent: number } = { maxConcurrent: 5 }
+    props: {
+        maxConcurrent: number;
+        hideCursor: boolean;
+        clearOnComplete: boolean;
+    } = {
+        maxConcurrent: 5,
+        hideCursor: true,
+        clearOnComplete: true
+    }
 ): TaskPoolExecutor<TOutput, CliProgressRunContext> => {
     return new CliProgressTaskPoolExecutor<TOutput>(props);
 };

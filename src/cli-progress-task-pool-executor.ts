@@ -8,15 +8,19 @@ export class CliProgressTaskPoolExecutor<
 > extends SimpleTaskPoolExecutor<TOutput, CliProgressRunContext> {
     private readonly poolProgress: MultiBar;
     private readonly bars: Map<string, SingleBar>;
-    constructor(props: { maxConcurrent: number }) {
+    constructor(props: {
+        maxConcurrent: number;
+        clearOnComplete: boolean;
+        hideCursor: boolean;
+    }) {
         super(props);
         this.poolProgress = new MultiBar(
             {
                 format:
                     colors.redBright('{bar}') +
                     ' {percentage}% | {title} | {info}',
-                clearOnComplete: true,
-                hideCursor: true
+                clearOnComplete: props.clearOnComplete,
+                hideCursor: props.hideCursor
             },
             Presets.rect
         );
