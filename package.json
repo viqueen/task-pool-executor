@@ -1,6 +1,6 @@
 {
-  "name": "task-pool-executor",
-  "version": "2.2.0",
+  "name": "@labset/task-pool-executor",
+  "version": "2.3.0",
   "description": "task pool executor",
   "scripts": {
     "build": "tsc",

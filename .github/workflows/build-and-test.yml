@@ -1,4 +1,4 @@
-name: task-pool-executor Test
+name: "@labset/task-pool-executor Build and Test"
 
 on: [push]
 

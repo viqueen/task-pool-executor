@@ -1,4 +1,4 @@
-name: task-pool-executor Package
+name: "@labset/task-pool-executor Publish"
 
 on:
   release:
@@ -16,6 +16,6 @@ jobs:
       - run: yarn
       - run: yarn test
       - run: yarn build
-      - run: npm publish
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
