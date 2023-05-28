@@ -13,13 +13,13 @@ asynchronous tasks
 - **npm**
 
 ```bash
-npm install task-pool-executor --save
+npm install @labset/task-pool-executor --save
 ```
 
 - **yarn**
 
 ```bash
-yarn add task-pool-executor
+yarn add @labset/task-pool-executor
 ```
 
 ### use it
@@ -27,7 +27,7 @@ yarn add task-pool-executor
 - simple task executor
 
 ```typescript
-import { taskPoolExecutor } from "task-pool-executor";
+import { taskPoolExecutor } from "@labset/task-pool-executor";
 
 const executor = taskPoolExecutor<string>({ maxConcurrent: 3 });
 const task = {
@@ -45,7 +45,7 @@ await executor.close();
 import {
   CliProgressRunContext,
   cliProgressTaskPoolExecutor,
-} from "task-pool-executor";
+} from "@labset/task-pool-executor";
 
 const taskPool = cliProgressTaskPoolExecutor<string>();
 
