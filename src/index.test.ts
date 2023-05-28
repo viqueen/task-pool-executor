@@ -1,16 +1,39 @@
-import Mock = jest.Mock;
-import { Runnable, taskPoolExecutor, withCliProgress } from './index';
+/**
+ * Copyright 2023 Hasnae Rehioui
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import {
+    CliProgressRunContext,
+    Runnable,
+    taskPoolExecutor,
+    withCliProgress
+} from './index';
 
-const executor = taskPoolExecutor<string, {}>({ maxConcurrent: 3 });
+type RunContext = { at: Date } & CliProgressRunContext;
+const executor = taskPoolExecutor<string, RunContext>({ maxConcurrent: 3 });
 
 describe('task-pool-executor', () => {
-    let task: Mock;
-    let delayedTask: (millis: number, runIt?: boolean) => Runnable<string, {}>;
+    let task: jest.Mock;
+    let delayedTask: (
+        millis: number,
+        runIt?: boolean
+    ) => Runnable<string, RunContext>;
 
     beforeEach(() => {
         task = jest.fn();
 
-        delayedTask = (millis: number, runIt: boolean = true) => {
+        delayedTask = (millis: number, runIt = true) => {
             const run = () =>
                 new Promise<any>((resolve) => {
                     setTimeout(() => {
@@ -68,7 +91,7 @@ describe('task-pool-executor', () => {
         await withCliProgress<string>((taskPool) => {
             new Array(4)
                 .fill(0)
-                .map((_v, index) => delayedTask(1500))
+                .map((_v, _index) => delayedTask(1500))
                 .forEach((t) => taskPool.submit(t));
         });
         expect(task).toBeCalledTimes(4);

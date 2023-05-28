@@ -1,4 +1,4 @@
-name: task-pool-executor Package
+name: "@labset/task-pool-executor Publish"
 
 on:
   release:
@@ -14,8 +14,10 @@ jobs:
           node-version: 18
           registry-url: https://registry.npmjs.org/
       - run: yarn
+      - run: yarn format:check
+      - run: yarn lint
       - run: yarn test
       - run: yarn build
-      - run: npm publish
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

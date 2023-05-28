@@ -1,4 +1,4 @@
-name: task-pool-executor Test
+name: "@labset/task-pool-executor Build and Test"
 
 on: [push]
 
@@ -12,5 +12,6 @@ jobs:
           node-version: 18
       - run: yarn
       - run: yarn format:check
+      - run: yarn lint
       - run: yarn test
       - run: yarn build
