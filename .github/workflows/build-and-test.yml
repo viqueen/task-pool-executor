@@ -12,5 +12,6 @@ jobs:
           node-version: 18
       - run: yarn
       - run: yarn format:check
+      - run: yarn lint
       - run: yarn test
       - run: yarn build
