@@ -713,9 +713,9 @@
     "@babel/types" "^7.20.7"
 
 "@types/cli-progress@^3.11.0":
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.11.1.tgz#93664d42a0b7b2fc495bec8a470c60001d3c3d68"
-  integrity sha512-d9iA+0uys9N6wV/SvZkDEWMYwv+e/mhWPLa6lncQ1ZqrC3mXHnDmidanVGoVGnmCQ3mCxyu9S09Y2s18u5wL5w==
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.11.5.tgz#9518c745e78557efda057e3f96a5990c717268c3"
+  integrity sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==
   dependencies:
     "@types/node" "*"
 
