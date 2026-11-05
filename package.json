@@ -1,6 +1,6 @@
 {
   "name": "@labset/task-pool-executor",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "task pool executor",
   "scripts": {
     "build": "tsc",
@@ -37,8 +37,8 @@
     "@types/cli-progress": "^3.11.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.7",
-    "@typescript-eslint/parser": "^5.59.7",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^8.41.0",
     "eslint-plugin-import": "^2.27.5",
     "husky": "^9.0.0",
